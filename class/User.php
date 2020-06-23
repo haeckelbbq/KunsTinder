@@ -292,6 +292,7 @@ class User
     }
 
     //User Einloggen
+    //@Lars und Thomas, habe nicht so gut verstanden mit den Arrays hier... sollten nochmal zusammen schauen
     public static function userEinloggen($username, $passwort) : bool
     {
         //Abweichung von Struktogram! @Lars und Thomas, Bitte kontrollieren
