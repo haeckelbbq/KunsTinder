@@ -107,7 +107,7 @@ class Bild
     }
 
 //Bild löschen kann sowohl von Admin als auch von User benutzt werden
-public static function bildLoeschen($bildtitel):void
+public static function bildLoeschen(string $bildtitel):void
 {
     try {
         $dbh = Db::getConnection();
@@ -146,6 +146,8 @@ public static function bildWechseln() : array
     }
 }
 
+// TO DO:
 //Methode bildAnzeigen fehlt
 //Methode bildHochladen fehlt
+//Bild Vorschau
 }
