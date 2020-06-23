@@ -203,8 +203,7 @@ class User
 
 
     //Username Überprüfen für Registrierung
-    public static function usernamenUeberpruefen ($username): bool
-    {
+    public static function usernamenUeberpruefen ($username){
         try {
             $dbh = Db::getConnection();
             //DB abfragen
@@ -227,8 +226,7 @@ class User
     }
 
     //Passwort überprüfen für Registrierung und Einloggen
-    public static function passwortUeberpruefen($passwort1, $passwort2): bool
-    {
+    public static function passwortUeberpruefen($passwort1, $passwort2){
         if($passwort1 != ''){
             if($passwort1===$passwort2){
                 return true;
@@ -243,8 +241,7 @@ class User
     }
 
     //User Registrierung
-    public static function userRegistrieren($username, $vorname, $nachname, $plz, $ort, $strassehausnummer, $passwort) : bool
-    {
+    public static function userRegistrieren($username, $vorname, $nachname, $plz, $ort, $strassehausnummer, $passwort){
       if(self::usernamenUeberpruefen($username)){
           if(self::passwortUeberpruefen($passwort)){
               try {
@@ -273,8 +270,7 @@ class User
     }
 
     //Daten von User holen fürs Einloggen
-    public static function userDatenHolen($username): string
-    {
+    public static function userDatenHolen($username){
         try {
             $dbh = Db::getConnection();
             //DB abfragen
@@ -292,17 +288,15 @@ class User
     }
 
     //User Einloggen
-    //@Lars und Thomas, habe nicht so gut verstanden mit den Arrays hier... sollten nochmal zusammen schauen
-    public static function userEinloggen($username, $passwort) : bool
-    {
-        //Abweichung von Struktogram! @Lars und Thomas, Bitte kontrollieren
+    public static function userEinloggen($username, $passwort){
+        //Abweichung von Struktogram! Bitte kontrollieren
         $userdaten[]='';
         $userdaten<-self::userDatenHolen($username) ;
         $loginPruefen = '';
         $loginPruefen<-$userdaten[0]->row[1];
         $passwortPruefen = '';
         $passwortPruefen<- $userdaten[0]->row[1];
-        $userId=0;
+        $userId=int; //wie geht es nochaml mit int?
         $userId<-$userdaten[0] ->row[0];
 
         if($loginPruefen===$username){
@@ -319,84 +313,5 @@ class User
             return 'Der Username existiert nicht';
         }
 
-    }
-
-    //Profil Ändern von User vom User
-    public static function profilAendern($vorname, $nachname, $plz, $ort,$strassehausnummer, $passwort): void
-    {
-        try {
-            $dbh = Db::getConnection();
-
-            //DB abfragen
-            $sql = 'UPDATE user
-                    SET vorname = :vorname, nachname = :nachname, plz = :plz, ort = :ort, strassehausnummer = : strassehausnummer, passwort = SHA(:passwort)
-                    WHERE username = :username';
-            $sth = $dbh->prepare($sql); //$sh für PDOStatement (prepared Statement)
-            $sth->bindParam('vorname', $vorname, PDO::PARAM_STR);
-            $sth->bindParam('nachname', $nachname, PDO::PARAM_STR);
-            $sth->bindParam('plz', $plz, PDO::PARAM_STR);
-            $sth->bindParam('ort', $ort, PDO::PARAM_STR);
-            $sth->bindParam('strassehausnummer', $strassehausnummer, PDO::PARAM_STR);
-            $sth->bindParam('passwort', $passwort, PDO::PARAM_STR);
-            $sth->execute();
-        }catch (PDOException $e)
-        {
-            echo 'Connection failed: ' . $e->getMessage();
-        }
-    }
-
-    //User sperren vom Admin
-    public static function userSperren($username, $status): void
-    {
-        try {
-            $dbh = Db::getConnection();
-
-            //DB abfragen
-            $sql = 'UPDATE user
-                    SET username = :username, status = :status
-                    WHERE username = :username';
-            $sth = $dbh->prepare($sql); //$sh für PDOStatement (prepared Statement)
-            $sth->bindParam('username', $username, PDO::PARAM_STR);
-            $sth->bindParam('status', $status, PDO::PARAM_STR);
-            $sth->execute();
-        }catch (PDOException $e)
-        {
-            echo 'Connection failed: ' . $e->getMessage();
-        }
-    }
-
-    //Status von User abfragen. Ist er aktiv oder nicht? Beeinflusst was gesehen wird oder nicht
-    public static function userStatusAbfragen($username, $status) : string
-    {
-        try {
-            $dbh = Db::getConnection();
-            //DB abfragen
-            $sql = 'SELECT status = :status FROM user
-                    WHERE username = :username';
-            $sth = $dbh->prepare($sql); //$sh für PDOStatement (prepared Statement)
-            $sth->bindParam('username', $username, PDO::PARAM_STR);
-            $sth->bindParam('status', $status, PDO::PARAM_STR);
-            $sth->execute();
-            $status = $sth->fetchColumn(PDO::FETCH_COLUMN); //@Lars und Thomas, richtige Schreibweise?
-            return $status;
-        } catch (PDOException $e) {
-            echo 'Connection failed: ' . $e->getMessage();
-        }
-    }
-
-        //User löschen vom Admin aus
-        //war kein Struktogram! @Lars und Thomas, bitte genau prüfen
-        public static function userLoeschen($username) : void
-    {
-        try {
-            $dbh = Db::getConnection();
-            $sql = 'DELETE FROM user WHERE username = :username ';
-            $sth = $dbh->prepare($sql);
-            $sth->bindParam('username', $username, PDO::PARAM_STR);
-            $sth->execute();
-        } catch (PDOException $e)
-        {
-            echo 'Connection failed: ' . $e->getMessage();
-        }
     }
 }
