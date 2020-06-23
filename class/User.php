@@ -392,7 +392,7 @@ class User
             $dbh = Db::getConnection();
             $sql = 'DELETE FROM user WHERE username = :username ';
             $sth = $dbh->prepare($sql);
-            $sth->bindParam('username', $username, PDO::PARAM_INT);
+            $sth->bindParam('username', $username, PDO::PARAM_STR);
             $sth->execute();
         } catch (PDOException $e)
         {
