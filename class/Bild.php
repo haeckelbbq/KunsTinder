@@ -132,7 +132,7 @@ public static function bildWechseln() : array
         $sth->execute();
         $bildID = $sth->fetchAll(PDO::FETCH_COLUMN); //@Lars und Thomas, Variable wir dann nicht mehr benutzt. Haben wir einen Denkfehler gehabt?
         do{
-            $zufallsBildId<-random(1, $bildID[0]);
+            $zufallsBildId<-random(1, $bildID[0]); // @Lars und Thomas, ist mir nicht klar was wir da machen. Stimmt es so?
             $sql = 'DELETE FROM bild WHERE id = :id ';
             $sth = $dbh->prepare($sql);
             $sth->bindParam('zufallsBildId', $zufallsBildId, PDO::PARAM_STR);
