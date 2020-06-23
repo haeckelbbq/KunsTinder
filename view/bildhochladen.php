@@ -65,11 +65,7 @@
                     <?php echo Html::getPullDown(Kategorietyp::getDataFromDatabase(), 'kategorietypen'); ?>
                 </td>
             </tr>
-            <?php
-            $datum = date("d.m.Y",$timestamp);
-            $uhrzeit = date("H:i",$timestamp);
-            echo $datum," - ",$uhrzeit," Uhr";
-            ?>
+
 
             <tr>
 

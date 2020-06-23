@@ -34,7 +34,7 @@
                 <tbody>
                 <tr>
                     <td>Username:</td>
-                    <td><input type="text" name="name"></td>
+                    <td><input type="text" name="username"></td>
                 </tr>
                 <tr>
                     <td>Vorname:</td>
@@ -68,11 +68,8 @@
                     <td></td>
                     <td><input type="reset"> <input type="submit" name="" value="Registrieren"></td>
                 </tr>
-
-                <?php echo $fehlermeldung; ?>
-
-
         </form>
+        <?php echo $fehlermeldung; ?>
     </article>
     <footer><h2>besteBilderFürAlle</h2></footer>
 
