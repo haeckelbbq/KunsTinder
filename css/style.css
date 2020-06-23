@@ -42,7 +42,7 @@ img.download {vertical-align:middle;}
 
 /* ----------container zentriert das layout-------------- */
 #container {
-max-width: 1600px;
+max-width: 1700px;
 min-width:960px;
 margin:10px  auto;
 
@@ -54,9 +54,9 @@ margin:10px  auto;
 header {
 	padding:20px;
 	background:#ccc ;
-	background-image: url(../img/restaurant_header.JPG);
-	width: 1600px;
-	height: 140px;
+	background-image: url(../img/Banner004.png);
+	width: 1700px;
+	height: 200px;
 	
 }
 	
@@ -77,6 +77,14 @@ article {
 
 
 }
+
+
+bildanzeige{
+
+	width: 500px;
+	height: 500px;
+
+}
 table, th, td {
 	border: 1px solid black ;
 	border-collapse: collapse;
@@ -90,7 +98,7 @@ padding:  0 0 20px;
 line-height:1.5em;
 }
 
-/* -------------- navigavtion------------- */
+/* -------------- navigation------------- */
 nav {
 float: left;
 width: 250px;
@@ -111,5 +119,5 @@ footer {
 	background-color: #d1a04a;
 padding:20px;
 clear: both;
-border-top:5px solid #ccc;
+
 }

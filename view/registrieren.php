@@ -10,11 +10,11 @@
 
         <table>
             <tr>
-                <td><a href="">Home</a></td>
+                <td><a href="index.php?action=startseite&area=user">Home</a></td>
             </tr>
 
             <tr>
-                <td><a href="">Einloggen</a></td>
+                <td><a href="index.php?action=einloggen&area=user">Einloggen</a></td>
             </tr>
 
 
@@ -54,7 +54,7 @@
                 </tr>
                 <tr>
                     <td>Strasse und Hausnr:</td>
-                    <td><input type="text" name="strasseundhausnummer"></td>
+                    <td><input type="text" name="strassehausnummer"></td>
                 </tr>
                 <tr>
                     <td>Passwort:</td>
@@ -69,7 +69,7 @@
                     <td><input type="reset"> <input type="submit" name="" value="Registrieren"></td>
                 </tr>
 
-<!--                --><?php //echo $fehlermeldung; ?>
+                <?php echo $fehlermeldung; ?>
 
 
         </form>

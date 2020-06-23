@@ -10,11 +10,11 @@
 
         <table>
             <tr>
-                <td><a href="">Home</a></td>
+                <td><a href="index.php?action=startseite&area=user">Home</a></td>
             </tr>
 
             <tr>
-                <td><a href="">Registrieren</a></td>
+                <td><a href="index.php?action=registrieren&area=user">Registrieren</a></td>
             </tr>
 
 
