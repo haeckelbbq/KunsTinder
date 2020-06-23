@@ -54,17 +54,31 @@
                 <td><?php echo $kommentare[$i]->getUsername(); ?></td>
                 <td><?php echo $kommentare[$i]->getKommentar(); ?></td>
             </tr>
-                <?php
-                $datum = date("d.m.Y",$timestamp);
-                $uhrzeit = date("H:i",$timestamp);
-                echo $datum," - ",$uhrzeit," Uhr";
-                ?>
-                <tr>
-                if (isset($user_id) && User::getById($user_id)->getRolle() === 'admin') {
-                echo '<td><a href="index.php?action=loeschen&area=kommentar&id=' . kommentare[$i]->getId() . '"><button>Löschen</button></a></td>';
-                }
-                </tr>
 
+                <tr>
+                    <?php if (isset($user_id) && User::getById($user_id)->getRolle() === 'reguser') {
+                        if (User::getRestaurantbewertung($restaurants[$i]->getId(), $user_id) == 0) {
+                            $id = $restaurants[$i]->getId();
+                            echo '<td><a href="index.php?action=zeigeaendern&area=restaurant&id=' ?><?php echo $id; ?><?php echo '"><button>bewerten</button></a></td>';
+
+                        } else {
+
+                            echo '<td>' . User::getRestaurantbewertung($restaurants[$i]->getId(), $user_id) . '</td>';
+                        }
+                    }
+                    if (isset($user_id) && User::getById($user_id)->getRolle() === 'admin') {
+                        echo '<td><a href="index.php?action=loeschen&area=restaurant&id=' . $restaurants[$i]->getId() . '"><button>Löschen</button></a></td>';
+                    }
+                    ?>
+                </tr>
+                <td>
+                    <?php
+                    if (Bewertung_Restaurant_User::getKommentar($user[$i]->getId(), $user_id) === '-' && ($user_id != 0)) {
+                        echo '<a href="index.php?action=zeigeaendern&area=restaurant&id=' ?><?php echo $id; ?><?php echo '" ><button>kommentieren</button></a>';
+                    } else {
+                        echo Bewertung_Restaurant_User::getKommentar($restaurants[$i]->getId(), $user_id);
+                    }
+                    ?></td>
 
             <?php
             }
