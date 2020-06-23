@@ -35,7 +35,7 @@ ALTER TABLE bild2kategorie ADD FOREIGN KEY fk2_kategorie(kategorie_id) REFERENCE
 
 CREATE TABLE kommentar(id INT PRIMARY KEY AUTO_INCREMENT,
                        kommentartext VARCHAR(150),
-                       erstelldatum DATE,
+                       erstelldatum DATETIME NOT NULL DEFAULT current_timestamp,
                        user_id INT,
                        bild_id INT);
 
