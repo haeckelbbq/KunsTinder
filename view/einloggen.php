@@ -1,0 +1,57 @@
+<?php include 'module/htmlbegin.php'; ?>
+
+<body>
+
+<div id="container">
+    <header>
+
+    </header>
+    <nav>
+
+        <table>
+            <tr>
+                <td><a href="">Home</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="">Registrieren</a></td>
+            </tr>
+
+
+        </table>
+
+    </nav>
+    <aside>
+        <?php include 'module/aside.php'; ?>
+    </aside>
+
+    <article>
+
+        <br>einloggenanzeige</br>
+
+
+        <form action="index.php" method="post">
+            <input type="hidden" name="action" value="einloggenpruefen">
+
+            <table>
+                <thead>
+                <tbody>
+                <tr>
+                    <td>Username:</td>
+                    <td><input name="username" type="text" ></td>
+                </tr>
+                <tr>
+                    <td>Passwort:</td>
+                    <td><input name="passwort" type="passwort" ></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td><input type="submit" name="submitname" value="senden"></td>
+                </tr>
+
+        </form>
+<!--        --><?php //echo $fehlermeldung; ?>
+    </article>
+    <footer><h2>besteBilderFürAlle</h2></footer>
+
+    <?php include 'module/htmlend.php'; ?>
