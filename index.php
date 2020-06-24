@@ -26,6 +26,18 @@ if ($action === 'startseite')
 {
     include 'view/startseite.php';
 }
+elseif($action === 'einloggen')
+{
+    include 'view/einloggen.php';
+}
+elseif($action === 'einloggenpruefen')
+{
+    if()
+    {
+
+    }
+
+}
 
 ?>
 
