@@ -269,6 +269,11 @@ class User
       }
     }
 
+    public static function buildFromPDO(int $id, string $vorname, string $nachname, string $plz, string $ort, string $strassehausnummer, string $username, string $passwort, string $rolle, string $status) : User
+    {
+        return new User($id, $vorname, $nachname, $plz, $ort, $strassehausnummer, $username, $passwort, $rolle, $status);
+    }
+
     //Daten von User holen fürs Einloggen
     public static function userDatenHolen(string $username){
         try {
@@ -279,8 +284,8 @@ class User
             $sth = $dbh->prepare($sql); //$sh für PDOStatement (prepared Statement)
             $sth->bindParam('username', $username, PDO::PARAM_STR);
             $sth->execute();
-            $holeDaten = $sth->fetchAll(PDO::FETCH_COLUMN);
-           return $holeDaten;
+            $holeDaten = $sth->fetchAll(PDO::FETCH_FUNC, 'User::buildFromPDO');
+           return $holeDaten[0];
         } catch (PDOException $e)
         {
             echo 'Connection failed: ' . $e->getMessage();
@@ -289,15 +294,13 @@ class User
 
     //User Einloggen
     public static function userEinloggen(string $username, string $passwort){
-        //Abweichung von Struktogram! Bitte kontrollieren
-        $userdaten[]='';
-        $userdaten<-self::userDatenHolen($username) ;
+        $userdaten = self::userDatenHolen($username) ;
         $loginPruefen = '';
-        $loginPruefen<-$userdaten[0]->row[1];
+        $loginPruefen = $userdaten->getUsername();
         $passwortPruefen = '';
-        $passwortPruefen<- $userdaten[0]->row[1];
-        $userId=int; //wie geht es nochaml mit int?
-        $userId<-$userdaten[0] ->row[0];
+        $passwortPruefen = $userdaten->getPasswort();
+        $userId= 0;
+        $userId = $userdaten ->getId();
 
         if($loginPruefen===$username){
             if($passwortPruefen===$passwort){

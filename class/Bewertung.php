@@ -154,7 +154,32 @@ class Bewertung
 
     //TO DO:
     //Methode für Update nötig?
+
     //Durchschnitt rechnen
+    public static function durchschnittNote($bewertung, $bild_id): int
+    {
+        //alle -1, 1 zusammen rechnen
+        try {
+            $dbh = Db::getConnection();
+            //DB abfragen
+            $sql = 'SELECT * FROM bewertung
+                    WHERE bewertung = :bewertung';
+            $sth = $dbh->prepare($sql); //$sh für PDOStatement (prepared Statement)
+            $sth->bindParam('bewertung', $bewertung, PDO::PARAM_INT);
+            $sth->execute();
+            $summeBewertung = $sth->fetchAll(PDO::FETCH_COLUMN);
+            if(count($summeBewertung)===1){
+                return true;
+            }
+            else{
+                return false;
+            }
+        } catch (PDOException $e)
+        {
+            echo 'Connection failed: ' . $e->getMessage();
+        }
+
+    }
     //Durchschnitt anzeigen pro Bild
 
 }
