@@ -154,11 +154,16 @@ private string $bezeichnung;
             $sth->bindParam('id', $id, PDO::PARAM_INT);
             $sth->bindParam('bezeichnung', $bezeichnung, PDO::PARAM_STR);
             $sth->execute();
-            $bildKategorie = $sth->fetchAll(PDO::FETCH_FUNC, 'Kategorie::builtFromPDO');
+            $bildKategorie = $sth->fetchAll(PDO::FETCH_FUNC, 'Kategorie::buildFromPDO');
         } catch (PDOException $e)
         {
             echo 'Connection failed: ' . $e->getMessage();
         }
+    }
+
+    public static function buildFromPDO(int $id, string $bezeichnung): Kategorie
+    {
+        return new Kategorie($id, $bezeichnung);
     }
 
 //    public function jsonSerialize()

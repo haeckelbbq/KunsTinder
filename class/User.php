@@ -203,7 +203,8 @@ class User
 
 
     //Username Überprüfen für Registrierung
-    public static function usernamenUeberpruefen (string $username){
+    public static function usernamenUeberpruefen (string $username) : bool
+    {
         try {
             $dbh = Db::getConnection();
             //DB abfragen
@@ -225,8 +226,9 @@ class User
         }
     }
 
-    //Passwort überprüfen für Registrierung und Einloggen
-    public static function passwortUeberpruefen(string $passwort1, string $passwort2){
+    //Passwort überprüfen für Registrierung
+    public static function passwortUeberpruefen(string $passwort1, string $passwort2) : bool
+    {
         if($passwort1 != ''){
             if($passwort1===$passwort2){
                 return true;
@@ -241,37 +243,36 @@ class User
     }
 
     //User Registrierung
-    public static function userRegistrieren(string $username, string $vorname, string $nachname, string $plz, string $ort, string $strassehausnummer, string $passwort){
-      if(self::usernamenUeberpruefen($username)){
-          if(self::passwortUeberpruefen($passwort)){
-              try {
-                  $dbh = Db::getConnection();
-                  //DB abfragen
-                  $sql = 'INSERT INTO user(username, vorname, nachname, plz, ort, strassehausnummer, passwort, rolle, status)
-                        VALUES(:username, :vorname, :nachname, :plz, :ort, :strassehausnummer, SHA(:passwort), "regUser", "aktiv")';
-                  $sth = $dbh->prepare($sql); //$sh für PDOStatement (prepared Statement)
-                  $sth->bindParam('username', $username, PDO::PARAM_STR);
-                  $sth->bindParam('vorname', $vorname, PDO::PARAM_STR);
-                  $sth->bindParam('nachname', $nachname, PDO::PARAM_STR);
-                  $sth->bindParam('plz', $plz, PDO::PARAM_STR);
-                  $sth->bindParam('ort', $ort, PDO::PARAM_STR);
-                  $sth->bindParam('strassehausnummer', $strassehausnummer, PDO::PARAM_STR);
-                  $sth->bindParam('passwort', $passwort, PDO::PARAM_STR);
-                  $sth->execute();
-                  return 'Sie haben sich erfolgreich registriert, willkommen!';
-              } catch (PDOException $e)
-              {
-                  echo 'Connection failed: ' . $e->getMessage();
-              }
-          }else{
-              return 'Die Passwörter stimmen nicht überein';
-          }
-      }
-    }
-
-    public static function buildFromPDO(int $id, string $vorname, string $nachname, string $plz, string $ort, string $strassehausnummer, string $username, string $passwort, string $rolle, string $status) : User
-    {
-        return new User($id, $vorname, $nachname, $plz, $ort, $strassehausnummer, $username, $passwort, $rolle, $status);
+    public static function userRegistrieren(string $username, string $vorname, string $nachname, string $plz, string $ort, string $strassehausnummer, string $passwort, string $passwort2){
+        if(!self::usernamenUeberpruefen($username)){
+            if(self::passwortUeberpruefen($passwort, $passwort2)){
+                try {
+                    $dbh = Db::getConnection();
+                    //DB abfragen
+                    $sql = 'INSERT INTO user(username, vorname, nachname, plz, ort, strassehausnummer, passwort, rolle, status)
+                        VALUES(:username, :vorname, :nachname, :plz, :ort, :strassehausnummer, SHA(:passwort), "user", "aktiv")';
+                    $sth = $dbh->prepare($sql); //$sh für PDOStatement (prepared Statement)
+                    $sth->bindParam('username', $username, PDO::PARAM_STR);
+                    $sth->bindParam('vorname', $vorname, PDO::PARAM_STR);
+                    $sth->bindParam('nachname', $nachname, PDO::PARAM_STR);
+                    $sth->bindParam('plz', $plz, PDO::PARAM_STR);
+                    $sth->bindParam('ort', $ort, PDO::PARAM_STR);
+                    $sth->bindParam('strassehausnummer', $strassehausnummer, PDO::PARAM_STR);
+                    $sth->bindParam('passwort', $passwort, PDO::PARAM_STR);
+                    $sth->execute();
+                    return 'Sie haben sich erfolgreich registriert, willkommen!';
+                } catch (PDOException $e)
+                {
+                    echo 'Connection failed: ' . $e->getMessage();
+                }
+            }else{
+                return 'Die Passwörter stimmen nicht überein';
+            }
+        }
+        else
+        {
+            return 'Der Username existiert bereits!';
+        }
     }
 
     //Daten von User holen fürs Einloggen
@@ -303,9 +304,9 @@ class User
         $userId = $userdaten ->getId();
 
         if($loginPruefen===$username){
-            if($passwortPruefen===$passwort){
+            if($passwortPruefen===SHA1($passwort)){
             session_start();
-            $_SESSION['userId'] = $userId;
+            $_SESSION['user_id'] = $userId;
             return 'Login erfolgreich';
             }
             else{
@@ -394,5 +395,10 @@ class User
         {
             echo 'Connection failed: ' . $e->getMessage();
         }
+    }
+
+    public static function buildFromPDO(int $id, string $vorname, string $nachname, string $plz, string $ort, string $strassehausnummer, string $username, string $passwort, string $rolle, string $status) : User
+    {
+        return new User($id, $vorname, $nachname, $plz, $ort, $strassehausnummer, $username, $passwort, $rolle, $status);
     }
 }
