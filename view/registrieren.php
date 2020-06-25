@@ -30,7 +30,6 @@
         <form action= "index.php" method="post">
             <input type="hidden" name="action" value="registrierenueberpruefen">
             <table>
-                <thead>
                 <tbody>
                 <tr>
                     <td>Username:</td>
@@ -68,6 +67,8 @@
                     <td></td>
                     <td><input type="reset"> <input type="submit" name="" value="Registrieren"></td>
                 </tr>
+                </tbody>
+            </table>
         </form>
         <?php echo $fehlermeldung; ?>
     </article>

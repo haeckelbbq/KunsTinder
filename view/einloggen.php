@@ -34,7 +34,6 @@
             <input type="hidden" name="action" value="einloggenpruefen">
 
             <table>
-                <thead>
                 <tbody>
                 <tr>
                     <td>Username:</td>
@@ -48,6 +47,8 @@
                     <td></td>
                     <td><input type="submit" name="submitname" value="senden"></td>
                 </tr>
+                </tbody>
+            </table>
 
         </form>
 <!--        --><?php //echo $fehlermeldung; ?>

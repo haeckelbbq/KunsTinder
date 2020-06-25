@@ -30,7 +30,6 @@
         <input type="hidden" name="action" value="insert">
         <input type="hidden" name="area" value="user">
         <table>
-            <thead>
             <tbody>
             <tr>
                 <td><label for="user"</label></td>
@@ -45,6 +44,8 @@
                 <td></td>
                 <td><input type="submit" name="submitname" value="OK"></td>
             </tr>
+            </tbody>
+        </table>
 
             <?php include 'view/module/htmlend.php'; ?>
 

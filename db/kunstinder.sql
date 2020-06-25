@@ -38,6 +38,7 @@ CREATE TABLE kommentar(id INT PRIMARY KEY AUTO_INCREMENT,
                        erstelldatum DATETIME NOT NULL DEFAULT current_timestamp,
                        user_id INT,
                        bild_id INT);
+# erstelldatum DATETIME NOT NULL DEFAULT current_timestamp -> Gib die zeit des Eintrags automatisch
 
 ALTER TABLE kommentar ADD FOREIGN KEY fk3_user(user_id) REFERENCES user(id) ON DELETE CASCADE;
 ALTER TABLE kommentar ADD FOREIGN KEY fk4_bild(bild_id) REFERENCES bild(id) ON DELETE CASCADE;
