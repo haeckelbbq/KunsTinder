@@ -32,11 +32,8 @@ elseif($action === 'einloggen')
 }
 elseif($action === 'einloggenpruefen')
 {
-    if()
-    {
-
-    }
-
+    $fehlermeldung = User::userEinloggen($username,$passwort);
+    include 'view/einloggen.php';
 }
 
 ?>
