@@ -30,44 +30,46 @@
         <form action= "index.php" method="post">
             <input type="hidden" name="action" value="registrierenueberpruefen">
             <table>
-                <thead>
+
                 <tbody>
                 <tr>
-                    <td>Username:</td>
-                    <td><input type="text" name="username"></td>
+                    <td><label for ="Username">Username: </label></td>
+                    <td><input type="text" name="username">
                 </tr>
                 <tr>
-                    <td>Vorname:</td>
-                    <td><input type="text" name="vorname"></td>
+                    <td><label for ="Vorname">Vorname: </label></td>
+                    <td><input type="text" name="vorname">
                 </tr>
                 <tr>
-                    <td>Nachname:</td>
-                    <td><input type="text" name="nachname"></td>
+                    <td><label for ="Nachname">Nachname: </label></td>
+                    <td><input type="text" name="nachname">
                 </tr>
                 <tr>
-                    <td>Plz:</td>
+                    <td><label for ="Plz">Plz: </label></td>
                     <td><input type="text" name="plz"></td>
                 </tr>
                 <tr>
-                    <td>Ort:</td>
+                    <td><label for ="Ort">Ort: </label></td>
                     <td><input type="text" name="ort"></td>
                 </tr>
                 <tr>
-                    <td>Strasse und Hausnr:</td>
+                    <td><label for ="Strasse und Hausnummer">Strasse und Hausnummer: </label></td>
                     <td><input type="text" name="strassehausnummer"></td>
                 </tr>
                 <tr>
-                    <td>Passwort:</td>
+                    <td><label for ="Passwort">Passwort: </label></td>
                     <td><input type="passwort" name="passwort"></td>
                 </tr>
                 <tr>
-                    <td>Passwort wiederholen:</td>
+                    <td><label for ="Passwort wiederholen">Passwort wiederholen: </label></td>
                     <td><input type="passwort" name="passwort2"></td>
                 </tr>
                 <tr>
                     <td></td>
                     <td><input type="reset"> <input type="submit" name="" value="Registrieren"></td>
                 </tr>
+                </tbody>
+            </table>
         </form>
         <?php echo $fehlermeldung; ?>
     </article>

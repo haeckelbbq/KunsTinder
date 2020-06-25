@@ -10,11 +10,11 @@
 
         <table>
             <tr>
-                <td><a href="">Profil bearbeiten</a></td>
+                <td><a href="">Home</a></td>
             </tr>
 
             <tr>
-                <td><a href="">Home</a></td>
+                <td><a href="">Profil bearbeiten</a></td>
             </tr>
 
             <tr>
@@ -38,7 +38,7 @@
             <tbody>
             <tr>
 
-                <?php if (isset($user_id) && User::getById($user_id)->getRolle() === 'reguser') {
+                <?php if (isset($user_id) && User::getById($user_id)->getRolle() === 'user') {
                     echo '<th>bisherige Bewertung</th>';
                 } ?>
                 <?php if (isset($user_id) && User::getById($user_id)->getRolle() === 'admin') {
@@ -56,27 +56,27 @@
             </tr>
 
                 <tr>
-                    <?php if (isset($user_id) && User::getById($user_id)->getRolle() === 'reguser') {
-                        if (User::getRestaurantbewertung($restaurants[$i]->getId(), $user_id) == 0) {
-                            $id = $restaurants[$i]->getId();
-                            echo '<td><a href="index.php?action=zeigeaendern&area=restaurant&id=' ?><?php echo $id; ?><?php echo '"><button>bewerten</button></a></td>';
+                    <?php if (isset($user_id) && User::getById($user_id)->getRolle() === 'user') {
+                        if (User::getRestaurantbewertung($users[$i]->getId(), $user_id) == 0) {
+                            $id = $users[$i]->getId();
+                            echo '<td><a href="index.php?action=zeigeaendern&area=user' ?><?php echo $id; ?><?php echo '"><button>bewerten</button></a></td>';
 
                         } else {
 
-                            echo '<td>' . User::getRestaurantbewertung($restaurants[$i]->getId(), $user_id) . '</td>';
+                            echo '<td>' . User::getbildbewertung($users[$i]->getId(), $user_id) . '</td>';
                         }
                     }
                     if (isset($user_id) && User::getById($user_id)->getRolle() === 'admin') {
-                        echo '<td><a href="index.php?action=loeschen&area=restaurant&id=' . $restaurants[$i]->getId() . '"><button>Löschen</button></a></td>';
+                        echo '<td><a href="index.php?action=userloeschen&area=user' . $users[$i]->getId() . '"><button>Löschen</button></a></td>';
                     }
                     ?>
                 </tr>
                 <td>
                     <?php
-                    if (Bewertung_Restaurant_User::getKommentar($user[$i]->getId(), $user_id) === '-' && ($user_id != 0)) {
-                        echo '<a href="index.php?action=zeigeaendern&area=restaurant&id=' ?><?php echo $id; ?><?php echo '" ><button>kommentieren</button></a>';
+                    if (Bewertung_Restaurant_User::getKommentar($users[$i]->getId(), $user_id) === '-' && ($user_id != 0)) {
+                        echo '<a href="index.php?action=zeigeaendern&area=user' ?><?php echo $id; ?><?php echo '" ><button>kommentieren</button></a>';
                     } else {
-                        echo Bewertung_Restaurant_User::getKommentar($restaurants[$i]->getId(), $user_id);
+                        echo Bewertung_Restaurant_User::getKommentar($users[$i]->getId(), $user_id);
                     }
                     ?></td>
 

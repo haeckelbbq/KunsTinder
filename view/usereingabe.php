@@ -33,16 +33,16 @@
             <thead>
             <tbody>
             <tr>
-                <td><label for="user"</label></td>
+                <label for="user"</label>
                 <td><input name="user" type="text"></td>
             </tr>
             <tr>
-                <td><label for="passwort">Passwort:</label></td>
+                <label for="passwort">Passwort:</label>
                 <td><input name="passwort" type="passwort" id="passwort"></td>
             </tr>
 
             <tr>
-                <td></td>
+
                 <td><input type="submit" name="submitname" value="OK"></td>
             </tr>
 
