@@ -61,7 +61,7 @@ private string $bezeichnung;
             $dbh = Db::getConnection();
             $sql = 'SELECT *
                 FROM kategorie';
-            $sth = $dbh->prepare($sql); //$sh für PDOStatement (prepared Statement)
+            $sth = $dbh->prepare($sql);
             $sth->execute();
             $bildKategorie = $sth->fetchAll(PDO::FETCH_FUNC, 'Kategorie::builtFromPDO'); //Stimmt es so?
         } catch (PDOException $e) {
@@ -82,7 +82,7 @@ private string $bezeichnung;
             $sql = 'SELECT *
                 FROM kategorie
                 WHERE id = :id';
-            $sth = $dbh->prepare($sql); //$sh für PDOStatement (prepared Statement)
+            $sth = $dbh->prepare($sql);
             $sth->bindParam('id', $id, PDO::PARAM_INT);
             $sth->execute();
             $bildKategorie = $sth->fetchAll(PDO::FETCH_FUNC, 'Kategorie::builtFromPDO');
@@ -98,7 +98,7 @@ private string $bezeichnung;
             $dbh = Db::getConnection();
             $sql = 'INSERT INTO kategorie(id, bezeichnung)
                     VALUES(NULL, :bezeichnung)';
-            $sth = $dbh->prepare($sql); //$sh für PDOStatement (prepared Statement)
+            $sth = $dbh->prepare($sql);
             $sth->bindParam('bezeichnung', $bezeichnung, PDO::PARAM_STR);
             $sth->execute();
             $bildKategorie = $sth->fetchAll(PDO::FETCH_FUNC, 'Kategorie::builtFromPDO');
@@ -135,7 +135,7 @@ private string $bezeichnung;
             //DB abfragen
 
             $sql = 'DELETE FROM kategorie WHERE id = :id ';
-            $sth = $dbh->prepare($sql); //$sh für PDOStatement (prepared Statement)
+            $sth = $dbh->prepare($sql);
             $sth->bindParam('id', $id, PDO::PARAM_INT);
             $sth->execute();
         } catch (PDOException $e) {
@@ -150,7 +150,7 @@ private string $bezeichnung;
             $sql = 'UPDATE kategorie
                     SET bezeichnung = :bezeichnung
                     WHERE id = :id';
-            $sth = $dbh->prepare($sql); //$sh für PDOStatement (prepared Statement)
+            $sth = $dbh->prepare($sql);
             $sth->bindParam('id', $id, PDO::PARAM_INT);
             $sth->bindParam('bezeichnung', $bezeichnung, PDO::PARAM_STR);
             $sth->execute();

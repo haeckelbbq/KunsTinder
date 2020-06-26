@@ -152,9 +152,6 @@ class Bewertung
         }
     }
 
-    //TO DO:
-    //Methode für Update nötig?
-
     //Durchschnitt rechnen
     //@Lars und Thomas, Funtion ohne Struktogramm erstellt, bitte genau prüfen, thx
     public static function durchschnittNote($bewertung, $bild_id): int
@@ -182,4 +179,7 @@ class Bewertung
         return new Bewertung($id, $bewertung, $user_id, $bild_id);
     }
 
+
+    //TO DO:
+    //Methode für Update nötig?
 }
