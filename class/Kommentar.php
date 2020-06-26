@@ -116,7 +116,7 @@ public static function kommentarEinfuegen(int $user_id, int $bild_id, string $ko
         $dbh = Db::getConnection();
         //DB abfragen
         $sql = 'INSERT INTO kommentar (user_id, bild_id, kommentartext, erstelldatum)
-                        VALUES(:user_id, :bild_id, :kommentartext';
+                        VALUES(:user_id, :bild_id, :kommentartext)';
         $sth = $dbh->prepare($sql);
         $sth->bindParam('user_id', $user_id, PDO::PARAM_INT);
         $sth->bindParam('bild_id', $bild_id, PDO::PARAM_INT);
@@ -177,13 +177,18 @@ public static function kommentarEinfuegen(int $user_id, int $bild_id, string $ko
                     SET user_id = :user_id, bild_id = :bild_id, kommentartext = :kommentartext
                     WHERE id = :id';
             $sth = $dbh->prepare($sql); //$sh für PDOStatement (prepared Statement)
-            $sth->bindParam('userId', $user_id, PDO::PARAM_INT);
-            $sth->bindParam('bildId', $bild_id, PDO::PARAM_INT);
+            $sth->bindParam('user_id', $user_id, PDO::PARAM_INT);
+            $sth->bindParam('bild_id', $bild_id, PDO::PARAM_INT);
             $sth->bindParam('kommentartext', $kommentartext, PDO::PARAM_STR);
             $sth->execute();
         }catch (PDOException $e)
         {
             echo 'Connection failed: ' . $e->getMessage();
         }
+    }
+
+    public static function buildFromPDO(int $id, string $kommentartext, string $erstelldatum, int $user_id, int $bild_id ) : Kommentar
+    {
+        return new Kommentar($id, $kommentartext, $erstelldatum, $user_id, $bild_id);
     }
 }

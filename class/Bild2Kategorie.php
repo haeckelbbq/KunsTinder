@@ -81,11 +81,9 @@ private int $kategorie_id;
             $sth->bindParam('bild_id', $bild_id, PDO::PARAM_INT);
             $sth->bindParam('kategorie_id', $kategorie_id, PDO::PARAM_INT);
             $sth->execute();
-            //Ziel Rückgabe Restauranttyp-Objekt
             $bildKategorie = Kategorie::getById($kategorie_id);
-            //frisch vergebenen PK von db auslesen
             echo $dbh->lastInsertId();
-            $bilds = $sth->fetchAll(PDO::FETCH_FUNC, 'Bild::builtFromPDO'); //wir haben KEIN builtFromPDO in Bild. Ändern?
+            $bilds = $sth->fetchAll(PDO::FETCH_FUNC, 'Bild::buildFromPDO');
         } catch (PDOException $e)
         {
             echo 'Connection failed: ' . $e->getMessage();
