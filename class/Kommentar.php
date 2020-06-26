@@ -147,7 +147,8 @@ public static function kommentarEinfuegen(int $user_id, int $bild_id, string $ko
     //Kommentar anzeigen
     //Datum automatisch anzeigen auch hier? Versuch mit NOW()
     //Methode ohne Struktogramm, @Lars und Thomas bitte genau prüfen, danke
-    public static function kommentarAnzeigen(int $id){
+    public static function kommentarAnzeigen(int $id) : string
+    {
         try {
             $dbh = Db::getConnection();
             //DB abfragen
