@@ -210,7 +210,7 @@ class User
             //DB abfragen
             $sql = 'SELECT * FROM user
                     WHERE username = :username';
-            $sth = $dbh->prepare($sql); //$sh für PDOStatement (prepared Statement)
+            $sth = $dbh->prepare($sql);
             $sth->bindParam('username', $username, PDO::PARAM_STR);
             $sth->execute();
             $name = $sth->fetchAll(PDO::FETCH_COLUMN);
@@ -243,7 +243,8 @@ class User
     }
 
     //User Registrierung
-    public static function userRegistrieren(string $username, string $vorname, string $nachname, string $plz, string $ort, string $strassehausnummer, string $passwort, string $passwort2){
+    public static function userRegistrieren(string $username, string $vorname, string $nachname, string $plz, string $ort, string $strassehausnummer, string $passwort, string $passwort2) :string
+    {
         if(!self::usernamenUeberpruefen($username)){
             if(self::passwortUeberpruefen($passwort, $passwort2)){
                 try {
@@ -251,7 +252,7 @@ class User
                     //DB abfragen
                     $sql = 'INSERT INTO user(username, vorname, nachname, plz, ort, strassehausnummer, passwort, rolle, status)
                         VALUES(:username, :vorname, :nachname, :plz, :ort, :strassehausnummer, SHA(:passwort), "user", "aktiv")';
-                    $sth = $dbh->prepare($sql); //$sh für PDOStatement (prepared Statement)
+                    $sth = $dbh->prepare($sql);
                     $sth->bindParam('username', $username, PDO::PARAM_STR);
                     $sth->bindParam('vorname', $vorname, PDO::PARAM_STR);
                     $sth->bindParam('nachname', $nachname, PDO::PARAM_STR);
@@ -276,16 +277,17 @@ class User
     }
 
     //Daten von User holen fürs Einloggen
-    public static function userDatenHolen(string $username){
+    public static function userDatenHolen(string $username) : array
+    {
         try {
             $dbh = Db::getConnection();
             //DB abfragen
             $sql = 'SELECT * FROM user
                     WHERE username = :username';
-            $sth = $dbh->prepare($sql); //$sh für PDOStatement (prepared Statement)
+            $sth = $dbh->prepare($sql);
             $sth->bindParam('username', $username, PDO::PARAM_STR);
             $sth->execute();
-            $holeDaten = $sth->fetchAll(PDO::FETCH_FUNC, 'User::buildFromPDO');
+            $holeDaten[] = $sth->fetchAll(PDO::FETCH_FUNC, 'User::buildFromPDO');
            return $holeDaten[0];
         } catch (PDOException $e)
         {
@@ -294,7 +296,8 @@ class User
     }
 
     //User Einloggen
-    public static function userEinloggen(string $username, string $passwort){
+    public static function userEinloggen(string $username, string $passwort) : string
+    {
         $userdaten = self::userDatenHolen($username) ;
         $loginPruefen = '';
         $loginPruefen = $userdaten->getUsername();
@@ -328,7 +331,7 @@ class User
             $sql = 'UPDATE user
                     SET vorname = :vorname, nachname = :nachname, plz = :plz, ort = :ort, strassehausnummer = : strassehausnummer, passwort = SHA(:passwort)
                     WHERE username = :username';
-            $sth = $dbh->prepare($sql); //$sh für PDOStatement (prepared Statement)
+            $sth = $dbh->prepare($sql);
             $sth->bindParam('vorname', $vorname, PDO::PARAM_STR);
             $sth->bindParam('nachname', $nachname, PDO::PARAM_STR);
             $sth->bindParam('plz', $plz, PDO::PARAM_STR);
@@ -352,7 +355,7 @@ class User
             $sql = 'UPDATE user
                     SET username = :username, status = :status
                     WHERE username = :username';
-            $sth = $dbh->prepare($sql); //$sh für PDOStatement (prepared Statement)
+            $sth = $dbh->prepare($sql);
             $sth->bindParam('username', $username, PDO::PARAM_STR);
             $sth->bindParam('status', $status, PDO::PARAM_STR);
             $sth->execute();
@@ -370,7 +373,7 @@ class User
             //DB abfragen
             $sql = 'SELECT status = :status FROM user
                     WHERE username = :username';
-            $sth = $dbh->prepare($sql); //$sh für PDOStatement (prepared Statement)
+            $sth = $dbh->prepare($sql);
             $sth->bindParam('username', $username, PDO::PARAM_STR);
             $sth->bindParam('status', $status, PDO::PARAM_STR);
             $sth->execute();

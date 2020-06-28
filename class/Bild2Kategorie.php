@@ -77,7 +77,7 @@ private int $kategorie_id;
             //DB abfragen
             $sql = 'INSERT INTO bild2kategorie(id, bild_id, kategorie_id)
                         VALUES(NULL, :bild_id, :kategorie_id)';
-            $sth = $dbh->prepare($sql); //$sh für PDOStatement (prepared Statement)
+            $sth = $dbh->prepare($sql);
             $sth->bindParam('bild_id', $bild_id, PDO::PARAM_INT);
             $sth->bindParam('kategorie_id', $kategorie_id, PDO::PARAM_INT);
             $sth->execute();
@@ -99,7 +99,7 @@ private int $kategorie_id;
             $sql = 'SELECT kategorie_id 
                 FROM bild2kategorie
                 WHERE bild_id = :bild_id';
-            $sth = $dbh->prepare($sql); //$sh für PDOStatement (prepared Statement)
+            $sth = $dbh->prepare($sql);
             $sth->bindParam('bild_id', $bild_id, PDO::PARAM_INT);
             $sth->execute();
             $bildKategorie_ids = $sth->fetchAll(PDO::FETCH_COLUMN);

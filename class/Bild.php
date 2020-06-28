@@ -139,7 +139,7 @@ public static function bildWechseln() : array
         $dbh = Db::getConnection();
         $sql = 'SELECT * FROM bild
                     WHERE id > :id'; //@Lars und Thomas, soll grösste Id raus holen. stimmt so?
-        $sth = $dbh->prepare($sql); //$sh für PDOStatement (prepared Statement)
+        $sth = $dbh->prepare($sql);
         $sth->execute();
         $bildID = $sth->fetchAll(PDO::FETCH_COLUMN); //@Lars und Thomas, Variable haben wir dann nicht mehr benutzt. Haben wir einen Denkfehler gehabt?
         do{
@@ -151,7 +151,7 @@ public static function bildWechseln() : array
             $zufallsBild = $sth->fetchAll(PDO::FETCH_FUNC);
         }
         while(count($zufallsBild === 0));
-        bildAnzeigen($zufallsBild[0]); // Methode noch nicht geplant
+        self::bildAnzeigen($zufallsBild[0]); // @Lars und Thomas: Methode angepasst. Kontrollieren ob es die richtige Methode ist
     } catch (PDOException $e) {
         echo 'Connection failed: ' . $e->getMessage();
     }
@@ -178,7 +178,7 @@ public static function bildWechseln() : array
         }
     }
 
-    //Tabellen anzeigen
+    //Tabelle anzeigen
     //getVorschau() prüfen
     public static function tabelleAnzeigen($seite, $bildtitel, $kategorie, $username) : string
     {
@@ -272,14 +272,71 @@ public static function bildWechseln() : array
 		return $ausgabe;
 	}
 
+    //bild anzeigen
+    public static function bildAnzeigen(string $bild) : string
+    {
+        echo '<img src="data:image/png;base64,'.base64_encode($bild).'"/>';
+    }
+
+    // String aus BLOB erstellen
+    public static function bildStringErstellen(string $pfad) : string
+    {
+        $filename = $pfad;
+        $handle = fopen($filename, "rb");
+        $bildstring = fread($handle, filesize($filename));
+        fclose($handle);
+        return $bildstring;
+    }
+
+    //Bild in DB speichern
+    public static function bildHochladen(string $bild) :string
+    {
+        try {
+            $dbh = Db::getConnection();
+            //DB abfragen
+            $sql = 'INSERT INTO bild (bild)
+                        VALUES(:bild))';
+            $sth = $dbh->prepare($sql);
+            $sth->bindParam('bild', $bild, PDO::PARAM_STR);
+            $sth->execute();
+        }
+        catch (PDOException $e)
+        {
+            echo 'Connection failed: ' . $e->getMessage();
+        }
+    }
+
+    //Bild aus dem DB holen
+    //in SQL statement nur bild oder doch * nach SELECT?
+    public static function bildDbHolen($id, $bild) : array
+    {
+        try {
+            $dbh = Db::getConnection();
+            //DB abfragen
+            $sql = 'SELECT bild FROM bild                   
+                    WHERE id = :id';
+            $sth = $dbh->prepare($sql);
+            $sth->bindParam('id', $id, PDO::PARAM_INT);
+            $sth->bindParam('bild', $bild, PDO::PARAM_STR);
+            $sth->execute();
+            $holeBilder = $sth->fetchAll(PDO::FETCH_FUNC, 'Bild::buildFromPDO');
+            return $holeBilder[0];
+
+        } catch (PDOException $e)
+        {
+            echo 'Connection failed: ' . $e->getMessage();
+        }
+    }
+
 
     public static function buildFromPDO(int $id, string $bildtitel, string $erstelldatum, string $bild, int $user_id) : Bild // @Lars und Thomas ist $bild ein string???
     {
         return new Bild($id, $bildtitel, $erstelldatum, $bild, $user_id);
     }
+
 // TO DO:
-//Methode bildAnzeigen fehlt
-//Methode bildHochladen fehlt
-//Tabelle anzeigen
+//Methode bildAnzeigen fehlt -> done
+//Methode bildHochladen fehlt -> done
+//Tabelle anzeigen -> done
 //Bild Vorschau
 }

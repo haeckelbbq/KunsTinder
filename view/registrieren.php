@@ -30,38 +30,37 @@
         <form action= "index.php" method="post">
             <input type="hidden" name="action" value="registrierenueberpruefen">
             <table>
-
                 <tbody>
                 <tr>
-                    <td><label for ="Username">Username: </label></td>
-                    <td><input type="text" name="username">
+                    <td>Username:</td>
+                    <td><input type="text" name="username"></td>
                 </tr>
                 <tr>
-                    <td><label for ="Vorname">Vorname: </label></td>
-                    <td><input type="text" name="vorname">
+                    <td>Vorname:</td>
+                    <td><input type="text" name="vorname"></td>
                 </tr>
                 <tr>
-                    <td><label for ="Nachname">Nachname: </label></td>
-                    <td><input type="text" name="nachname">
+                    <td>Nachname:</td>
+                    <td><input type="text" name="nachname"></td>
                 </tr>
                 <tr>
-                    <td><label for ="Plz">Plz: </label></td>
+                    <td>Plz:</td>
                     <td><input type="text" name="plz"></td>
                 </tr>
                 <tr>
-                    <td><label for ="Ort">Ort: </label></td>
+                    <td>Ort:</td>
                     <td><input type="text" name="ort"></td>
                 </tr>
                 <tr>
-                    <td><label for ="Strasse und Hausnummer">Strasse und Hausnummer: </label></td>
+                    <td>Strasse und Hausnr:</td>
                     <td><input type="text" name="strassehausnummer"></td>
                 </tr>
                 <tr>
-                    <td><label for ="Passwort">Passwort: </label></td>
+                    <td>Passwort:</td>
                     <td><input type="passwort" name="passwort"></td>
                 </tr>
                 <tr>
-                    <td><label for ="Passwort wiederholen">Passwort wiederholen: </label></td>
+                    <td>Passwort wiederholen:</td>
                     <td><input type="passwort" name="passwort2"></td>
                 </tr>
                 <tr>
