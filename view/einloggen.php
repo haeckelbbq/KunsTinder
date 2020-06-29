@@ -10,11 +10,11 @@
 
         <table>
             <tr>
-                <td><a href="index.php?action=startseite&area=user">Home</a></td>
+                <td><a href="index.php?action=startseite">Home</a></td>
             </tr>
 
             <tr>
-                <td><a href="index.php?action=registrieren&area=user">Registrieren</a></td>
+                <td><a href="index.php?action=registrieren">Registrieren</a></td>
             </tr>
 
 
@@ -31,10 +31,9 @@
 
 
         <form action="index.php" method="post">
-            <input type="hidden" name="action" value="einloggenpruefen">
+            <input type="hidden" name="action" value="einloggenueberpruefen">
 
             <table>
-                <thead>
                 <tbody>
                 <tr>
                     <td>Username:</td>
@@ -48,9 +47,11 @@
                     <td></td>
                     <td><input type="submit" name="submitname" value="senden"></td>
                 </tr>
+                </tbody>
+                </table>
 
         </form>
-<!--        --><?php //echo $fehlermeldung; ?>
+        <?php echo $fehlermeldung; ?>
     </article>
     <footer><h2>besteBilderFürAlle</h2></footer>
 

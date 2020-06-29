@@ -9,17 +9,9 @@
     <nav>
 
         <table>
-            <tr>
-                <td><a href="index.php?action=startseite&area=user">Home</a></td>
-            </tr>
-
-            <tr>
-                <td><a href="index.php?action=profilaendern&area=user">Profil ändern</a></td>
-            </tr>
-
-            <tr>
-                <td><a href="index.php?action=ausloggen&area=user">Ausloggen</a></td>
-            </tr>
+            <?php
+            include 'module/navStartseite' . $area . '.php';
+            ?>
         </table>
 
     </nav>
@@ -38,41 +30,39 @@
                     GIF vorliegen.
                 </td>
             </tr>
-            <tr>
-                <td>
-                    <form action="view/upload.php" method="post" enctype="multipart/form-data">
+            <form action="index.php" method="post" enctype="multipart/form-data">
+                <input type="hidden" name="action" value="bildhochladen">
+                <tr>
+                    <td>
                         <input type="file" name="datei"><br>
-                        <input type="submit" value="Hochladen">
-                    </form>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <label for="Titelbild">Titelbild</label>
-                    <input id="Titelbild">
-                </td>
-            </tr>
-
-            <tr>
-                <td>
-                    <label for="Erstelldatum">Erstelldatum</label>
-                <td><input name="erstelldatum" type="date">
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <label for="Kategorie">Kategorie</label>
-                    <?php echo Html::getPullDown(Kategorietyp::getDataFromDatabase(), 'kategorietypen'); ?>
-                </td>
-            </tr>
-
-
-            <tr>
-
-            </tr>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label for="Bildtitel">Titelbild</label>
+                        <input id="Bildtitel" name="bildtitel" type="text">
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label for="Erstelldatum">Erstelldatum</label>
+                        <input id="Erstelldatum" name="erstelldatum" type="date">
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label for="Kategorie">Kategorie</label>
+                        <input id="Kategorie" name="kategorie" type="text">
+                        <!--                 <?php //echo Html::getPullDown(Kategorietyp::getDataFromDatabase(), 'kategorietypen'); ?>-->
+                    </td>
+                </tr>
+                <tr>
+                    <input type="submit" value="Hochladen">
+                </tr>
+            </form>
             </tbody>
-
         </table>
+        <?php echo $fehlermeldung; ?>
     </article>
     <footer><h2>besteBilderFürAlle</h2></footer>
 

@@ -30,22 +30,21 @@
         <input type="hidden" name="action" value="insert">
         <input type="hidden" name="area" value="user">
         <table>
+            <thead>
             <tbody>
             <tr>
-                <label for="user"</label>
+                <td><label for="user"</label></td>
                 <td><input name="user" type="text"></td>
             </tr>
             <tr>
-                <label for="passwort">Passwort:</label>
+                <td><label for="passwort">Passwort:</label></td>
                 <td><input name="passwort" type="passwort" id="passwort"></td>
             </tr>
 
             <tr>
-
+                <td></td>
                 <td><input type="submit" name="submitname" value="OK"></td>
             </tr>
-            </tbody>
-        </table>
 
             <?php include 'view/module/htmlend.php'; ?>
 
