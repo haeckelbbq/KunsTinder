@@ -9,17 +9,9 @@
     <nav>
 
         <table>
-            <tr>
-                <td><a href="">Home</a></td>
-            </tr>
-
-            <tr>
-                <td><a href="">Profil bearbeiten</a></td>
-            </tr>
-
-            <tr>
-                <td><a href="">Ausloggen</a></td>
-            </tr>
+            <?php
+            include 'module/navStartseite' . $area . '.php';
+            ?>
         </table>
 
     </nav>

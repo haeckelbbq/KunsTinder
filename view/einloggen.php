@@ -9,14 +9,9 @@
     <nav>
 
         <table>
-            <tr>
-                <td><a href="index.php?action=startseite&area=user">Home</a></td>
-            </tr>
-
-            <tr>
-                <td><a href="index.php?action=registrieren&area=user">Registrieren</a></td>
-            </tr>
-
+            <?php
+            include 'module/navStartseite' . $area . '.php';
+            ?>
 
         </table>
 
@@ -34,7 +29,6 @@
             <input type="hidden" name="action" value="einloggenueberpruefen">
 
             <table>
-
                 <tbody>
                 <tr>
                     <td>Username:</td>
@@ -42,14 +36,14 @@
                 </tr>
                 <tr>
                     <td>Passwort:</td>
-                    <td><input name="passwort" type="password" ></td>
+                    <td><input name="passwort" type="passwort" ></td>
                 </tr>
                 <tr>
                     <td></td>
                     <td><input type="submit" name="submitname" value="senden"></td>
                 </tr>
                 </tbody>
-            </table>
+                </table>
 
         </form>
         <?php echo $fehlermeldung; ?>
