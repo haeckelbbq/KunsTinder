@@ -8,7 +8,7 @@ class Bild
     private string $erstelldatum;
     private string $bild; // @Lars und Thomas, als string, right?
     private int $user_id;
-    private string $vorschau;
+    //private string $vorschau;
 
     /**
      * Bild constructor.
@@ -19,14 +19,14 @@ class Bild
      * @param int $user_id
      * @param string $vorschau
      */
-    public function __construct(int $id, string $bildtitel, string $erstelldatum, string $bild, int $user_id, string $vorschau)
+    public function __construct(int $id, string $bildtitel, string $erstelldatum, string $bild, int $user_id) //, string $vorschau
     {
         $this->id = $id;
         $this->bildtitel = $bildtitel;
         $this->erstelldatum = $erstelldatum;
         $this->bild = $bild;
         $this->user_id = $user_id;
-        $this->vorschau = $vorschau;
+        //$this->vorschau = $vorschau;
     }
 
     /**
@@ -297,7 +297,7 @@ public static function bildWechseln() : array
 	}
 
     //Bild anzeigen
-    public static function bildAnzeigen(string $bild) : string
+    public static function bildAnzeigen(string $bild)
     {
         echo '<img src="data:image/png;base64,'.base64_encode($bild).'"/>';
     }

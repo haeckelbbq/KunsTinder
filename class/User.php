@@ -282,7 +282,7 @@ class User
     }
 
     //Daten von User holen fürs Einloggen
-    public static function userDatenHolen(string $username) : array
+    public static function userDatenHolen(string $username)
     {
         try {
             $dbh = Db::getConnection();
