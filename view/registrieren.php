@@ -10,21 +10,17 @@
 
         <table>
             <tr>
-                <td><a href="index.php?action=startseite&area=user">Home</a></td>
+                <td><a href="index.php?action=startseite">Home</a></td>
             </tr>
 
             <tr>
-                <td><a href="index.php?action=einloggen&area=user">Einloggen</a></td>
+                <td><a href="index.php?action=einloggen">Einloggen</a></td>
             </tr>
-
-
         </table>
-
     </nav>
     <aside>
         <?php include 'module/aside.php'; ?>
     </aside>
-
     <article>
         <h1> Anmelden </h1>
         <form action= "index.php" method="post">
