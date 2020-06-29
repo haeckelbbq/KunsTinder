@@ -137,27 +137,51 @@ public static function bildWechseln() : array
 {
     try {
         $dbh = Db::getConnection();
-        $sql = 'SELECT * FROM bild
-                    WHERE id > :id'; //@Lars und Thomas, soll grösste Id raus holen. stimmt so?
+        $sql = 'SELECT max(id) FROM bild';
         $sth = $dbh->prepare($sql);
         $sth->execute();
-        $bildID = $sth->fetchAll(PDO::FETCH_COLUMN); //@Lars und Thomas, Variable haben wir dann nicht mehr benutzt. Haben wir einen Denkfehler gehabt?
+        $bildID = $sth->fetchAll();
         do{
-            $zufallsBildId = random(1, $bildID[0]);
-            $sql = 'DELETE FROM bild WHERE id = :id ';
+            $zufallsBildId = random_int(1, $bildID[0][0]);
+            $sql = 'SELECT * FROM bild WHERE id = :zufallsBildId ';
             $sth = $dbh->prepare($sql);
             $sth->bindParam('zufallsBildId', $zufallsBildId, PDO::PARAM_STR);
             $sth->execute();
-            $zufallsBild = $sth->fetchAll(PDO::FETCH_FUNC);
+            $zufallsBild = $sth->fetchAll(PDO::FETCH_FUNC,'Bild::buildFromPDO');
         }
-        while(count($zufallsBild === 0));
-        self::bildAnzeigen($zufallsBild[0]); // @Lars und Thomas: Methode angepasst. Kontrollieren ob es die richtige Methode ist
+        while(count($zufallsBild) === 0);
+        //Bild::bildAnzeigen($zufallsBild[0]->getBild());
+
+        $sql = 'SELECT * FROM bewertung WHERE bild_id = :id ';
+        $sth = $dbh->prepare($sql);
+        $sth->bindParam('id', $zufallsBildId, PDO::PARAM_STR);
+        $sth->execute();
+        $bewertungen = $sth->fetchAll(PDO::FETCH_FUNC,'Bewertung::buildFromPDO');
+
+        if(count($bewertungen) === 0)
+        {
+            $durchschnittsbewertung = 0;
+        }
+        else
+        {
+            $durchschnittsbewertung = 1; // Bewertung::durchschnittsbewertungErmitteln($zufallsBildId)
+        }
+
+        $userId = $zufallsBild[0]->getUserId();
+        $sql = 'SELECT * FROM user WHERE id = :id';
+        $sth = $dbh->prepare($sql);
+        $sth->bindParam('id', $userId, PDO::PARAM_STR);
+        $sth->execute();
+        $userDaten = $sth->fetchAll(PDO::FETCH_FUNC, 'User::buildFromPDO');
+
+        $ausgabe = array('bildId' => $zufallsBildId, 'kuenstler' => $userDaten[0]->getUsername(), 'bildtitel' => $zufallsBild[0]->getBildtitel(), 'erstelldatum' => $zufallsBild[0]->getErstelldatum(), 'durchschnittsbewertung' => $durchschnittsbewertung, 'bild' => $zufallsBild[0]->getBild());
+        return $ausgabe;
     } catch (PDOException $e) {
         echo 'Connection failed: ' . $e->getMessage();
     }
 }
 
-    //Daten suchen, von aside in View, was der User unter bildtitel, Künstler und Kategorie suchen kann
+    //SUCH FUNKTION, von aside in View, was der User unter bildtitel, Künstler und Kategorie suchen kann
     public static function datenSuchen($kategorie, $username, $bildtitel) : array
     {
         try {
@@ -272,7 +296,7 @@ public static function bildWechseln() : array
 		return $ausgabe;
 	}
 
-    //bild anzeigen
+    //Bild anzeigen
     public static function bildAnzeigen(string $bild) : string
     {
         echo '<img src="data:image/png;base64,'.base64_encode($bild).'"/>';
@@ -289,44 +313,44 @@ public static function bildWechseln() : array
     }
 
     //Bild in DB speichern
-    public static function bildHochladen(string $bild) :string
+    public static function insertBild(string $bildtitel, string $erstelldatum, string $bild, string $userid)
     {
         try {
             $dbh = Db::getConnection();
             //DB abfragen
-            $sql = 'INSERT INTO bild (bild)
-                        VALUES(:bild))';
-            $sth = $dbh->prepare($sql);
+            $sql = 'INSERT INTO bild(bildtitel, erstelldatum, bild, userid) VALUES(:bildtitel, :erstelldatum, :bild, :userid)';
+            $sth = $dbh->prepare($sql); //$sh für PDOStatement (prepared Statement)
+            $sth->bindParam('bildtitel', $bildtitel, PDO::PARAM_STR);
+            $sth->bindParam('erstelldatum', $erstelldatum, PDO::PARAM_STR);
             $sth->bindParam('bild', $bild, PDO::PARAM_STR);
+            $sth->bindParam('userid', $userid, PDO::PARAM_INT);
             $sth->execute();
-        }
-        catch (PDOException $e)
+            return 'Das Bild wurde erfolgreich hochgeladen!';
+        } catch (PDOException $e)
         {
             echo 'Connection failed: ' . $e->getMessage();
+            return 'FEHLER!!!';
         }
     }
 
     //Bild aus dem DB holen
-    //in SQL statement nur bild oder doch * nach SELECT?
-    public static function bildDbHolen($id, $bild) : array
+    public static function bildDatenHolen(string $bildtitel) : array
     {
-        try {
-            $dbh = Db::getConnection();
-            //DB abfragen
-            $sql = 'SELECT bild FROM bild                   
-                    WHERE id = :id';
-            $sth = $dbh->prepare($sql);
-            $sth->bindParam('id', $id, PDO::PARAM_INT);
-            $sth->bindParam('bild', $bild, PDO::PARAM_STR);
-            $sth->execute();
-            $holeBilder = $sth->fetchAll(PDO::FETCH_FUNC, 'Bild::buildFromPDO');
-            return $holeBilder[0];
-
-        } catch (PDOException $e)
-        {
-            echo 'Connection failed: ' . $e->getMessage();
-        }
+    try {
+        $dbh = Db::getConnection();
+        //DB abfragen
+        $sql = 'SELECT * FROM bild
+                    WHERE bildtitel = :bildtitel';
+        $sth = $dbh->prepare($sql); //$sh für PDOStatement (prepared Statement)
+        $sth->bindParam('bildtitel', $bildtitel, PDO::PARAM_STR);
+        $sth->execute();
+        $holeDaten = $sth->fetchAll(PDO::FETCH_FUNC, 'Bild::buildFromPDO');
+        return $holeDaten[0];
+    } catch (PDOException $e)
+    {
+        echo 'Connection failed: ' . $e->getMessage();
     }
+}
 
 
     public static function buildFromPDO(int $id, string $bildtitel, string $erstelldatum, string $bild, int $user_id) : Bild // @Lars und Thomas ist $bild ein string???

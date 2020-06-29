@@ -128,7 +128,7 @@ private string $bezeichnung;
 //        return  $html;
 //    }
 
-    public static function deleteKategoriep(int $id): void
+    public static function deleteKategorie(int $id): void
     {
         try {
             $dbh = Db::getConnection();

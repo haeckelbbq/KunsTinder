@@ -31,10 +31,10 @@
 
 
         <form action="index.php" method="post">
-            <input type="hidden" name="action" value="einloggenpruefen">
+            <input type="hidden" name="action" value="einloggenueberpruefen">
 
             <table>
-                <thead>
+
                 <tbody>
                 <tr>
                     <td>Username:</td>
@@ -42,15 +42,17 @@
                 </tr>
                 <tr>
                     <td>Passwort:</td>
-                    <td><input name="passwort" type="passwort" ></td>
+                    <td><input name="passwort" type="password" ></td>
                 </tr>
                 <tr>
                     <td></td>
                     <td><input type="submit" name="submitname" value="senden"></td>
                 </tr>
+                </tbody>
+            </table>
 
         </form>
-<!--        --><?php //echo $fehlermeldung; ?>
+        <?php echo $fehlermeldung; ?>
     </article>
     <footer><h2>besteBilderFürAlle</h2></footer>
 

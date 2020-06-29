@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/KunsTinderGit.iml" filepath="$PROJECT_DIR$/.idea/KunsTinderGit.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/KunsTinder.iml" filepath="$PROJECT_DIR$/.idea/KunsTinder.iml" />
     </modules>
   </component>
 </project>

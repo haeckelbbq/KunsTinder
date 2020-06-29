@@ -213,14 +213,17 @@ class User
             $sth = $dbh->prepare($sql);
             $sth->bindParam('username', $username, PDO::PARAM_STR);
             $sth->execute();
-            $name = $sth->fetchAll(PDO::FETCH_COLUMN);
-            if(count($name)===1){
+            $name = $sth->fetchAll(PDO::FETCH_FUNC, 'User::buildFromPDO');
+            echo count($name) . '<br>';
+            if(count($name) > 0){
                 return true;
+                echo '<br> User OK <br>';
             }
             else{
+                echo '<br> User nicht OK <br>';
                 return false;
             }
-        } catch (PDOException $e)
+    }catch (PDOException $e)
         {
             echo 'Connection failed: ' . $e->getMessage();
         }
@@ -231,9 +234,11 @@ class User
     {
         if($passwort1 != ''){
             if($passwort1===$passwort2){
+                echo '<br> passwort OK <br>';
                 return true;
             }
             else{
+                echo '<br> passwort nicht OK <br>';
                 return false;
             }
         }
@@ -287,7 +292,7 @@ class User
             $sth = $dbh->prepare($sql);
             $sth->bindParam('username', $username, PDO::PARAM_STR);
             $sth->execute();
-            $holeDaten[] = $sth->fetchAll(PDO::FETCH_FUNC, 'User::buildFromPDO');
+            $holeDaten = $sth->fetchAll(PDO::FETCH_FUNC, 'User::buildFromPDO');
            return $holeDaten[0];
         } catch (PDOException $e)
         {
@@ -308,8 +313,11 @@ class User
 
         if($loginPruefen===$username){
             if($passwortPruefen===SHA1($passwort)){
-            session_start();
-            $_SESSION['user_id'] = $userId;
+                $_SESSION['userdaten'] = $userdaten;
+//                echo '<pre>';
+//                print_r($_SESSION);
+//                echo '</pre>';
+//            $_SESSION['username'] = $username;
             return 'Login erfolgreich';
             }
             else{
@@ -322,23 +330,48 @@ class User
     }
 
     //Profil Ändern von User vom User
-    public static function profilAendern(string $vorname, string $nachname, string $plz, string $ort, string $strassehausnummer, string $passwort): void
+    public static function profilAendern(string $username, string $vorname, string $nachname, string $plz, string $ort, string $strassehausnummer, string $passwort, string $passwort2): string
     {
         try {
             $dbh = Db::getConnection();
-
-            //DB abfragen
-            $sql = 'UPDATE user
-                    SET vorname = :vorname, nachname = :nachname, plz = :plz, ort = :ort, strassehausnummer = : strassehausnummer, passwort = SHA(:passwort)
+            if($passwort != '')
+            {
+                if(self::passwortUeberpruefen($passwort, $passwort2))
+                {
+                    //DB abfragen
+                    $sql = 'UPDATE user
+                    SET vorname = :vorname, nachname = :nachname, plz = :plz, ort = :ort, strassehausnummer = :strassehausnummer, passwort = SHA(:passwort)
                     WHERE username = :username';
-            $sth = $dbh->prepare($sql);
-            $sth->bindParam('vorname', $vorname, PDO::PARAM_STR);
-            $sth->bindParam('nachname', $nachname, PDO::PARAM_STR);
-            $sth->bindParam('plz', $plz, PDO::PARAM_STR);
-            $sth->bindParam('ort', $ort, PDO::PARAM_STR);
-            $sth->bindParam('strassehausnummer', $strassehausnummer, PDO::PARAM_STR);
-            $sth->bindParam('passwort', $passwort, PDO::PARAM_STR);
-            $sth->execute();
+                    $sth = $dbh->prepare($sql); //$sh für PDOStatement (prepared Statement)
+                    $sth->bindParam('vorname', $vorname, PDO::PARAM_STR);
+                    $sth->bindParam('nachname', $nachname, PDO::PARAM_STR);
+                    $sth->bindParam('plz', $plz, PDO::PARAM_STR);
+                    $sth->bindParam('ort', $ort, PDO::PARAM_STR);
+                    $sth->bindParam('strassehausnummer', $strassehausnummer, PDO::PARAM_STR);
+                    $sth->bindParam('username', $username, PDO::PARAM_STR);
+                    $sth->bindParam('passwort', $passwort, PDO::PARAM_STR);
+                    $sth->execute();
+                    $fehlermeldung = 'Die Änderung war erfolgreich!';
+                }
+                else
+                {
+                    $fehlermeldung = 'Die Änderung ist fehlgeschlagen, da das Passwort nicht mit der wiederholten Eingabe übereinstimmte!';
+                }
+            }
+            else
+            {
+                $sql = 'UPDATE user SET vorname = :vorname, nachname = :nachname, plz = :plz, ort = :ort, strassehausnummer = :strassehausnummer WHERE username = :username';
+                $sth = $dbh->prepare($sql); //$sh für PDOStatement (prepared Statement)
+                $sth->bindParam('vorname', $vorname, PDO::PARAM_STR);
+                $sth->bindParam('nachname', $nachname, PDO::PARAM_STR);
+                $sth->bindParam('plz', $plz, PDO::PARAM_STR);
+                $sth->bindParam('ort', $ort, PDO::PARAM_STR);
+                $sth->bindParam('strassehausnummer', $strassehausnummer, PDO::PARAM_STR);
+                $sth->bindParam('username', $username, PDO::PARAM_STR);
+                $sth->execute();
+                $fehlermeldung = 'Die Änderung war erfolgreich!';
+            }
+            return $fehlermeldung;
         }catch (PDOException $e)
         {
             echo 'Connection failed: ' . $e->getMessage();
@@ -377,7 +410,7 @@ class User
             $sth->bindParam('username', $username, PDO::PARAM_STR);
             $sth->bindParam('status', $status, PDO::PARAM_STR);
             $sth->execute();
-            $status = $sth->fetchColumn(PDO::FETCH_COLUMN); //@Lars und Thomas, richtige Schreibweise?
+            $status = $sth->fetchColumn(PDO::FETCH_COLUMN);
             return $status;
         } catch (PDOException $e) {
             echo 'Connection failed: ' . $e->getMessage();
