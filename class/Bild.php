@@ -303,7 +303,7 @@ public static function bildWechseln() : array
     }
 
     // String aus BLOB erstellen
-    public static function bildStringErstellen(string $pfad) : string
+    public static function bildStringErstellen(string $pfad)
     {
         $filename = $pfad;
         $handle = fopen($filename, "rb");
@@ -318,7 +318,7 @@ public static function bildWechseln() : array
         try {
             $dbh = Db::getConnection();
             //DB abfragen
-            $sql = 'INSERT INTO bild(bildtitel, erstelldatum, bild, userid) VALUES(:bildtitel, :erstelldatum, :bild, :userid)';
+            $sql = 'INSERT INTO bild(bildtitel, erstelldatum, bild, user_id) VALUES(:bildtitel, :erstelldatum, :bild, :userid)';
             $sth = $dbh->prepare($sql); //$sh für PDOStatement (prepared Statement)
             $sth->bindParam('bildtitel', $bildtitel, PDO::PARAM_STR);
             $sth->bindParam('erstelldatum', $erstelldatum, PDO::PARAM_STR);
@@ -334,7 +334,7 @@ public static function bildWechseln() : array
     }
 
     //Bild aus dem DB holen
-    public static function bildDatenHolen(string $bildtitel) : array
+    public static function bildDatenHolen(string $bildtitel)
     {
     try {
         $dbh = Db::getConnection();
