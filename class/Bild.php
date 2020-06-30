@@ -118,68 +118,68 @@ class Bild
     }
 
 //Bild löschen kann sowohl von Admin als auch von User benutzt werden
-public static function bildLoeschen(string $bildtitel):void
-{
-    try {
-        $dbh = Db::getConnection();
-        $sql = 'DELETE FROM bild WHERE bildtitel = :bildtitel ';
-        $sth = $dbh->prepare($sql);
-        $sth->bindParam('bildtitel', $bildtitel, PDO::PARAM_STR);
-        $sth->execute();
-    } catch (PDOException $e)
+    public static function bildLoeschen(string $bildtitel):void
     {
-        echo 'Connection failed: ' . $e->getMessage();
+        try {
+            $dbh = Db::getConnection();
+            $sql = 'DELETE FROM bild WHERE bildtitel = :bildtitel ';
+            $sth = $dbh->prepare($sql);
+            $sth->bindParam('bildtitel', $bildtitel, PDO::PARAM_STR);
+            $sth->execute();
+        } catch (PDOException $e)
+        {
+            echo 'Connection failed: ' . $e->getMessage();
+        }
     }
-}
 
 //Bild Wechseln, wenn button next gedrückt wird in View
-public static function bildWechseln() : array
-{
-    try {
-        $dbh = Db::getConnection();
-        $sql = 'SELECT max(id) FROM bild';
-        $sth = $dbh->prepare($sql);
-        $sth->execute();
-        $bildID = $sth->fetchAll();
-        do{
-            $zufallsBildId = random_int(1, $bildID[0][0]);
-            $sql = 'SELECT * FROM bild WHERE id = :zufallsBildId ';
+    public static function bildWechseln() : array
+    {
+        try {
+            $dbh = Db::getConnection();
+            $sql = 'SELECT max(id) FROM bild';
             $sth = $dbh->prepare($sql);
-            $sth->bindParam('zufallsBildId', $zufallsBildId, PDO::PARAM_STR);
             $sth->execute();
-            $zufallsBild = $sth->fetchAll(PDO::FETCH_FUNC,'Bild::buildFromPDO');
+            $bildID = $sth->fetchAll();
+            do{
+                $zufallsBildId = random_int(1, $bildID[0][0]);
+                $sql = 'SELECT * FROM bild WHERE id = :zufallsBildId ';
+                $sth = $dbh->prepare($sql);
+                $sth->bindParam('zufallsBildId', $zufallsBildId, PDO::PARAM_STR);
+                $sth->execute();
+                $zufallsBild = $sth->fetchAll(PDO::FETCH_FUNC,'Bild::buildFromPDO');
+            }
+            while(count($zufallsBild) === 0);
+            //Bild::bildAnzeigen($zufallsBild[0]->getBild());
+
+            $sql = 'SELECT * FROM bewertung WHERE bild_id = :id ';
+            $sth = $dbh->prepare($sql);
+            $sth->bindParam('id', $zufallsBildId, PDO::PARAM_STR);
+            $sth->execute();
+            $bewertungen = $sth->fetchAll(PDO::FETCH_FUNC,'Bewertung::buildFromPDO');
+
+            if(count($bewertungen) === 0)
+            {
+                $durchschnittsbewertung = 0;
+            }
+            else
+            {
+                $durchschnittsbewertung = 1; // Bewertung::durchschnittsbewertungErmitteln($zufallsBildId)
+            }
+
+            $userId = $zufallsBild[0]->getUserId();
+            $sql = 'SELECT * FROM user WHERE id = :id';
+            $sth = $dbh->prepare($sql);
+            $sth->bindParam('id', $userId, PDO::PARAM_STR);
+            $sth->execute();
+            $userDaten = $sth->fetchAll(PDO::FETCH_FUNC, 'User::buildFromPDO');
+
+            $ausgabe = array('bildId' => $zufallsBildId, 'kuenstler' => $userDaten[0]->getUsername(), 'bildtitel' => $zufallsBild[0]->getBildtitel(), 'erstelldatum' => $zufallsBild[0]->getErstelldatum(), 'durchschnittsbewertung' => $durchschnittsbewertung, 'bild' => $zufallsBild[0]->getBild());
+            return $ausgabe;
+        } catch (PDOException $e) {
+            echo 'Connection failed: ' . $e->getMessage();
         }
-        while(count($zufallsBild) === 0);
-        //Bild::bildAnzeigen($zufallsBild[0]->getBild());
-
-        $sql = 'SELECT * FROM bewertung WHERE bild_id = :id ';
-        $sth = $dbh->prepare($sql);
-        $sth->bindParam('id', $zufallsBildId, PDO::PARAM_STR);
-        $sth->execute();
-        $bewertungen = $sth->fetchAll(PDO::FETCH_FUNC,'Bewertung::buildFromPDO');
-
-        if(count($bewertungen) === 0)
-        {
-            $durchschnittsbewertung = 0;
-        }
-        else
-        {
-            $durchschnittsbewertung = 1; // Bewertung::durchschnittsbewertungErmitteln($zufallsBildId)
-        }
-
-        $userId = $zufallsBild[0]->getUserId();
-        $sql = 'SELECT * FROM user WHERE id = :id';
-        $sth = $dbh->prepare($sql);
-        $sth->bindParam('id', $userId, PDO::PARAM_STR);
-        $sth->execute();
-        $userDaten = $sth->fetchAll(PDO::FETCH_FUNC, 'User::buildFromPDO');
-
-        $ausgabe = array('bildId' => $zufallsBildId, 'kuenstler' => $userDaten[0]->getUsername(), 'bildtitel' => $zufallsBild[0]->getBildtitel(), 'erstelldatum' => $zufallsBild[0]->getErstelldatum(), 'durchschnittsbewertung' => $durchschnittsbewertung, 'bild' => $zufallsBild[0]->getBild());
-        return $ausgabe;
-    } catch (PDOException $e) {
-        echo 'Connection failed: ' . $e->getMessage();
     }
-}
 
     //SUCH FUNKTION, von aside in View, was der User unter bildtitel, Künstler und Kategorie suchen kann
     public static function datenSuchen($kategorie, $username, $bildtitel) : array
@@ -187,7 +187,7 @@ public static function bildWechseln() : array
         try {
             $dbh = Db::getConnection();
             //DB abfragen
-            $sql = "SELECT * FROM bild 
+            $sql = "SELECT * FROM bild
                     WHERE kategorie LIKE '%:kategorie%' AND  username LIKE '%:username%' AND bildtitel LIKE '%:bildtitel%' ";
             $sth = $dbh->prepare($sql);
             $sth->bindParam('kategorie', $kategorie, PDO::PARAM_STR);
@@ -216,14 +216,14 @@ public static function bildWechseln() : array
         }
         $suchDaten[ ] = self::datenSuchen($kategorie, $username, $bildtitel);
         if ($suchDaten -> Length < 10)
-		{
+        {
             $anzahlEinträge = $suchDaten -> Length;
-		}
-		else
-		{
+        }
+        else
+        {
             $anzahlEinträge = 10;
         }
-		if ($area!= 'anonymous')
+        if ($area!= 'anonymous')
         {
             if ($rolle === 'admin')
             {
@@ -236,10 +236,10 @@ public static function bildWechseln() : array
 				<th>Künstler</th>
 				<th></th>
 				<th></th>';
-				for ( $i = $startpunkt; $i <= $startpunkt + $anzahlEinträge-1 ; $i += (1))
-				{
+                for ( $i = $startpunkt; $i <= $startpunkt + $anzahlEinträge-1 ; $i += (1))
+                {
                     $ausgabe = $ausgabe.
-				    '
+                    '
                     <tr>
                     <td>$suchDaten[i] -> getBildtitel()</td>
 					<td><a href ="index.php?action=bildloeschen&area=user">Bild löschen</a></td> 
@@ -249,8 +249,8 @@ public static function bildWechseln() : array
 					<td><a href ="index.php?action=usersperren&area=user">Benutzer sperren</a></td>
 					<td><a href ="index.php?action=userloeschen&area=user">Benutzer löschen</a></td>
 					</tr>';
-				}
-			}
+                }
+            }
             else
             {
                 $ausgabe = $ausgabe.
@@ -259,8 +259,8 @@ public static function bildWechseln() : array
 				<th>Vorschau</th>
 				<th>Kategorie</th>
 				<th>Künstler</th>';
-				for ($i = $startpunkt; $i <= $startpunkt + $anzahlEinträge-1; $i += (1))
-				{
+                for ($i = $startpunkt; $i <= $startpunkt + $anzahlEinträge-1; $i += (1))
+                {
                     $ausgabe = $ausgabe.
                     '
                     <tr>
@@ -269,8 +269,8 @@ public static function bildWechseln() : array
 					<td>$suchDaten[i] -> getKategorie()</td>
 					<td>$suchDaten[i] -> getUsername()</td>
 					</tr>';
-				}
-			}
+                }
+            }
         }
         else
         {
@@ -280,8 +280,8 @@ public static function bildWechseln() : array
 			<th>Vorschau</th>
 			<th>Kategorie</th>
 			<th>Künstler</th>';
-			for ($i = $startpunkt; $i <= $startpunkt + $anzahlEinträge-1; $i += (1))
-			{
+            for ($i = $startpunkt; $i <= $startpunkt + $anzahlEinträge-1; $i += (1))
+            {
                 $ausgabe = $ausgabe.
                 '
                 <tr>
@@ -291,10 +291,10 @@ public static function bildWechseln() : array
 				<td>$suchDaten[i] -> getUsername()</td>
 				</tr>';
 
-			}
-		}
-		return $ausgabe;
-	}
+            }
+        }
+        return $ausgabe;
+    }
 
     //Bild anzeigen
     public static function bildAnzeigen(string $bild)
@@ -336,27 +336,28 @@ public static function bildWechseln() : array
     //Bild aus dem DB holen
     public static function bildDatenHolen(string $bildtitel)
     {
-    try {
-        $dbh = Db::getConnection();
-        //DB abfragen
-        $sql = 'SELECT * FROM bild
+        try {
+            $dbh = Db::getConnection();
+            //DB abfragen
+            $sql = 'SELECT * FROM bild
                     WHERE bildtitel = :bildtitel';
-        $sth = $dbh->prepare($sql); //$sh für PDOStatement (prepared Statement)
-        $sth->bindParam('bildtitel', $bildtitel, PDO::PARAM_STR);
-        $sth->execute();
-        $holeDaten = $sth->fetchAll(PDO::FETCH_FUNC, 'Bild::buildFromPDO');
-        return $holeDaten[0];
-    } catch (PDOException $e)
-    {
-        echo 'Connection failed: ' . $e->getMessage();
+            $sth = $dbh->prepare($sql); //$sh für PDOStatement (prepared Statement)
+            $sth->bindParam('bildtitel', $bildtitel, PDO::PARAM_STR);
+            $sth->execute();
+            $holeDaten = $sth->fetchAll(PDO::FETCH_FUNC, 'Bild::buildFromPDO');
+            return $holeDaten[0];
+        } catch (PDOException $e)
+        {
+            echo 'Connection failed: ' . $e->getMessage();
+        }
     }
-}
 
 
     public static function buildFromPDO(int $id, string $bildtitel, string $erstelldatum, string $bild, int $user_id) : Bild // @Lars und Thomas ist $bild ein string???
     {
         return new Bild($id, $bildtitel, $erstelldatum, $bild, $user_id);
     }
+
 
 // TO DO:
 //Methode bildAnzeigen fehlt -> done

@@ -37,7 +37,7 @@
                 <td></td>
                 <td><input type="submit" name="submitname" value="OK"></td>
             </tr>
-
+            <footer><a href="view/nutzungsbedingung.php">Nutzungsbedingung</a></footer>
             <?php include 'view/module/htmlend.php'; ?>
 
 
@@ -46,3 +46,4 @@
     $users = User::getDataFromDatabase();
     ?>
 </article>
+

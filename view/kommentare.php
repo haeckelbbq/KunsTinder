@@ -83,6 +83,6 @@
 
         </table>
     </article>
-    <footer><h2>besteBilderFürAlle</h2></footer>
+    <footer><a href="view/nutzungsbedingung.php">Nutzungsbedingung</a></footer>
 
     <?php include 'module/htmlend.php'; ?>

@@ -75,6 +75,6 @@
 
         </table>
     </article>
-    <footer>    </footer>
+    <footer><a href="view/nutzungsbedingung.php">Nutzungsbedingung</a></footer>
 
     <?php include 'module/htmlend.php'; ?>
