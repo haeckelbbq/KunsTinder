@@ -75,6 +75,6 @@
 
         </table>
     </article>
-    <footer><h2>besteBilderFürAlle</h2></footer>
+    <footer><h2>wirMachenUnsUnsereEigenenBilder</h2></footer>
 
     <?php include 'module/htmlend.php'; ?>

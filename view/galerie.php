@@ -30,7 +30,7 @@
             <table>
                 <tbody>
                 <tr style="width: 500px; height: 100px">
-                    <td style="width: 50px; height: 50px">Bild1</td>
+                    <td style="width: 50px; height: 50px"><div id="galerieanzeige"> <?php ; ?> </div></td>
                     <td style="width: 50px; height: 50px">Bild2</td>
                     <td style="width: 50px; height: 50px">Bild3</td>
                     <td style="width: 50px; height: 50px">Bild4</td>
