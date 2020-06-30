@@ -187,8 +187,8 @@ public static function bildWechseln() : array
         try {
             $dbh = Db::getConnection();
             //DB abfragen
-            $sql = "SELECT * FROM bild
-                    WHERE kategorie LIKE '%:kategorie%' AND  username LIKE '%:username%' AND bildtitel LIKE '%:bildtitel' ";
+            $sql = "SELECT * FROM bild 
+                    WHERE kategorie LIKE '%:kategorie%' AND  username LIKE '%:username%' AND bildtitel LIKE '%:bildtitel%' ";
             $sth = $dbh->prepare($sql);
             $sth->bindParam('kategorie', $kategorie, PDO::PARAM_STR);
             $sth->bindParam('username', $username, PDO::PARAM_STR);
@@ -227,7 +227,7 @@ public static function bildWechseln() : array
         {
             if ($rolle === 'admin')
             {
-                $ausgabe == $ausgabe.
+                $ausgabe = $ausgabe.
                 '
                 <th>Kunstwerk</th>
 				<th></th>
@@ -238,7 +238,7 @@ public static function bildWechseln() : array
 				<th></th>';
 				for ( $i = $startpunkt; $i <= $startpunkt + $anzahlEinträge-1 ; $i += (1))
 				{
-                    $ausgabe == $ausgabe.
+                    $ausgabe = $ausgabe.
 				    '
                     <tr>
                     <td>$suchDaten[i] -> getBildtitel()</td>
@@ -253,7 +253,7 @@ public static function bildWechseln() : array
 			}
             else
             {
-                $ausgabe == $ausgabe.
+                $ausgabe = $ausgabe.
                 '
                 <th>Kunstwerk</th>
 				<th>Vorschau</th>
@@ -261,7 +261,7 @@ public static function bildWechseln() : array
 				<th>Künstler</th>';
 				for ($i = $startpunkt; $i <= $startpunkt + $anzahlEinträge-1; $i += (1))
 				{
-                    $ausgabe == $ausgabe.
+                    $ausgabe = $ausgabe.
                     '
                     <tr>
                     <td>$suchDaten[i] -> getBildtitel()</td>
@@ -274,7 +274,7 @@ public static function bildWechseln() : array
         }
         else
         {
-            $ausgabe == $ausgabe.
+            $ausgabe = $ausgabe.
             '
             <th>Kunstwerk</th>
 			<th>Vorschau</th>
@@ -282,7 +282,7 @@ public static function bildWechseln() : array
 			<th>Künstler</th>';
 			for ($i = $startpunkt; $i <= $startpunkt + $anzahlEinträge-1; $i += (1))
 			{
-                $ausgabe == $ausgabe.
+                $ausgabe = $ausgabe.
                 '
                 <tr>
                 <td>$suchDaten[i] -> getBildtitel()</td>

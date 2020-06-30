@@ -67,7 +67,7 @@ private string $bezeichnung;
         } catch (PDOException $e) {
             echo 'Connection failed: ' . $e->getMessage();
         }
-        return $$bildKategorie;
+        return $bildKategorie;
     }
 
     public static function builtFromPDO(int $id, string $bezeichnung): Kategorie
