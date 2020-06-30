@@ -19,7 +19,7 @@
         <br>Suchergebnisse</br>
             <table>
                 <tbody>
-                <?php echo bild::tabelleAnzeigen($bildtitel, $kategorie, $username)?>
+                <?php echo bild::tabelleAnzeigen($bildtitel)?>
                 </tbody>
             </table>
     </article>
