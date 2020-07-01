@@ -164,7 +164,7 @@ class Bild
             }
             else
             {
-                $durchschnittsbewertung = 1; // Bewertung::durchschnittsbewertungErmitteln($zufallsBildId)
+                $durchschnittsbewertung = Bewertung::durchschnittNote($zufallsBild[0]);
             }
 
             $userId = $zufallsBild[0]->getUserId();
@@ -299,7 +299,7 @@ class Bild
     //Bild anzeigen
     public static function bildAnzeigen(string $bild)
     {
-        echo '<img src="data:image/png;base64,'.base64_encode($bild).'"/>';
+        echo '<img src="data:image/jpeg;base64,'.base64_encode($bild).'"/>';
     }
 
     // String aus BLOB erstellen
@@ -334,8 +334,7 @@ class Bild
     }
 
     //Bild aus dem DB holen
-    public static function bildDatenHolen(string $bildtitel)
-    {
+    public static function bildDatenHolen(string $bildtitel){
         try {
             $dbh = Db::getConnection();
             //DB abfragen

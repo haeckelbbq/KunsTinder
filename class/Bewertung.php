@@ -112,23 +112,17 @@ class Bewertung
         try {
             $dbh = Db::getConnection();
             //DB abfragen
-            $sql = 'INSERT INTO bewertung (user_id, bild_id)
-                        VALUES(:user_id, :bild_id)';
+            $sql = 'SELECT * FROM bewertung WHERE user_id = :userId AND bild_id = :bildId';
             $sth = $dbh->prepare($sql);
-            $sth->bindParam('user_id', $userId, PDO::PARAM_INT);
-            $sth->bindParam('bild_id', $bildId, PDO::PARAM_INT);
+            $sth->bindParam('userId', $userId, PDO::PARAM_INT);
+            $sth->bindParam('bildId', $bildId, PDO::PARAM_INT);
             $sth->execute();
-            $holeDaten = $sth->fetchAll(PDO::FETCH_FUNC);
-            for($i=0 ; $i = count($holeDaten); $i++)
-            {
-                if($holeDaten[$i]->getUserId() === $userId
-                    && $holeDaten[$i]->getBildId() === $bildId){
-                    return true;
-                }
-                else{
-                    return false;
-                }
+            $holeDaten = $sth->fetchAll();
+            if(count($holeDaten) > 0){
                 return true;
+            }
+            else{
+                return false;
             }
         } catch (PDOException $e)
         {
@@ -154,20 +148,20 @@ class Bewertung
 
     //Durchschnitt rechnen
     //@Lars und Thomas, Funtion ohne Struktogramm erstellt, bitte genau prüfen, thx
-    public static function durchschnittNote($bewertung, $bild_id): int
+    public static function durchschnittNote(Bild $bild): int
     {
         //alle -1, 1 der Spalte bewertung in der Tabelle bewertung zusammen rechnen
         try {
+            $bild_id = $bild->getId();
             $dbh = Db::getConnection();
             //DB abfragen
             $sql = 'SELECT SUM(bewertung) FROM bewertung
                     WHERE bild_id = :bild_id';
             $sth = $dbh->prepare($sql); //$sh für PDOStatement (prepared Statement)
-            $sth->bindParam('bewertung', $bewertung, PDO::PARAM_INT);
             $sth->bindParam('bild_id', $bild_id, PDO::PARAM_INT);
             $sth->execute();
-            $summeBewertung = $sth->fetchAll(PDO::FETCH_COLUMN);
-            return $summeBewertung;
+            $summeBewertung = $sth->fetchAll();
+            return $summeBewertung[0][0];
         } catch (PDOException $e)
         {
             echo 'Connection failed: ' . $e->getMessage();

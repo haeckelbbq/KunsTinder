@@ -43,6 +43,8 @@ $action = $_REQUEST['action'] ?? 'startseite';
 $area = $_REQUEST['area'] ?? 'anonymous';
 $username = $_REQUEST['username'] ?? '';
 $rolle = $_REQUEST['rolle'] ?? '';
+$bewertung = $_REQUEST['bewertung'] ?? '';
+$bildtitel = $_REQUEST['bildtitel'] ?? '';
 
 $nachname = $_POST['nachname'] ?? '';
 $vorname = $_POST['vorname'] ?? '';
@@ -53,9 +55,7 @@ $ort = $_POST['ort'] ?? '';
 $strassehausnummer = $_POST['strassehausnummer'] ?? '';
 $bild = $_POST['bild'] ?? '';
 $erstelldatum = $_POST['erstelldatum'] ?? '';
-$bildtitel = $_POST['bildtitel'] ?? '';
 $kategorie = $_POST['kategorie'] ?? '';
-$bewertung = $_POST['bewertung'] ?? '';
 $fehlermeldung = $_POST['fehlermeldung'] ?? '';
 
 
@@ -195,6 +195,37 @@ elseif($action === 'updaten')
     $ortSession = '';
     $strassehausnummerSession = '';
     include 'view/einloggen.php';
+}
+elseif($action === 'bewerten')
+{
+    if($bewertung === 'top')
+    {
+        $wertigkeit = 1;
+    }
+    else
+    {
+        $wertigkeit = -1;
+    }
+    $bildObjekt = Bild::bildDatenHolen($bildtitel);
+    $bildId = $bildObjekt->getId();
+    if(Bewertung::pruefeBewertungsstatus($userId, $bildId))
+    {
+        $fehlermeldung = 'Sie haben dieses Bild bereits bewertet';
+    }
+    else
+    {
+        Bewertung::bildBewerten($userId, $bildId, $wertigkeit);
+        $fehlermeldung = 'Bewertung erfolgreich';
+    }
+
+    $bilddaten = Bild::bildWechseln();
+    $bild = $bilddaten['bild'];
+    $kuenstler = $bilddaten['kuenstler'];
+    $bildtitel = $bilddaten['bildtitel'];
+    $erstelldatum = $bilddaten['erstelldatum'];
+    $durchschnittsbewertung = $bilddaten['durchschnittsbewertung'];
+
+    include 'view/startseite.php';
 }
 elseif($action === 'usersperren')
 {

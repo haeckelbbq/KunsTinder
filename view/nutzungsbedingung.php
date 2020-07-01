@@ -218,7 +218,7 @@
             Kontakt</a></p>
 </article>
 <!--Home Button funktioniert nicht!-->
-<a href="index.php?action=startseite">
+<a href="../index.php?action=startseite">
     <button>Home</button>
 </a>
 </body>

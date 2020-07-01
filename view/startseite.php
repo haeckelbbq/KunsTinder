@@ -49,7 +49,7 @@
                     <?php
                     if($userId != 0)
                     {
-                        echo "<a href='index.php?action=bewerten&bewertung=top'><button>TOP</button></a>";
+                        echo "<a href='index.php?action=bewerten&bewertung=top&bildtitel=". $bildtitel ."'><button>TOP</button></a>";
                     }
                     else
                     {
@@ -61,7 +61,7 @@
                     <?php
                     if($userId != 0)
                     {
-                        echo "<a href='index.php?action=bewerten&bewertung=flop'><button>FLOP</button></a>";
+                        echo "<a href='index.php?action=bewerten&bewertung=flop&bildtitel=". $bildtitel ."'><button>FLOP</button></a>";
                     }
                     else
                     {
@@ -69,7 +69,7 @@
                     }
                     ?>
                 </td>
-                <td><a href=""><button>nächstes</button></a></td>
+                <td><a href="index.php?action=startseite"><button>nächstes</button></a></td>
             </tr>
             </tbody>
 
